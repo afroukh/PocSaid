@@ -9,6 +9,7 @@ namespace Isa.Core.Services.DomainModels
 {
     public class Invoice
     {
+     
         public InvoiceHeader InvoiceHeader { get; set; }
         public Client Client { get; set; }
 

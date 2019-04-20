@@ -1,0 +1,57 @@
+﻿@model Isa.Core.Services.DomainModels.Invoice
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div>
+    <h4>Invoice: @Model.InvoiceHeader.InvoiceHeaderId</h4>
+    <h4>Date: @Model.InvoiceHeader.InvoiceDate</h4>
+
+    <hr />
+
+    <div class="control-group">
+        <label class="control-label">Name</label>
+        <div class="controls readonly">
+            @Model.Client.Name
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label">Address</label>
+        <div class="controls readonly">
+            @Model.Client.Address
+        </div>
+    </div>
+
+    <hr />
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Qt</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.InvoiceHeader.InvoiceItems)
+            {
+                <tr>
+                    <td>@item.Product.Label</td>
+                    <td>@item.Product.Price</td>
+                    <td>@item.Quantity</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+   
+
+</div>
+<p>
+    @Html.ActionLink("Add New Invoice", "Create") |
+  
+</p>

@@ -21,8 +21,14 @@ namespace Isa.Infrastructures.Services.Services
         public Invoice GetInvoiceById(int id)
         {
             var invoiceHeader = _unitOfWork.InvoiceHeaderRepository.GetFirstOrDefault(x => x.InvoiceHeaderId == id,
-                               includes: x => x.InvoiceItems);
-            var client = _unitOfWork.ClientRepository.GetFirstOrDefault(x => x.InvoiceHeaderId == id);
+                                x => x.InvoiceItems);
+            var client = _unitOfWork.ClientRepository.GetFirstOrDefault(x => x.ClientId == invoiceHeader.ClientId);
+            
+            foreach(var item in invoiceHeader.InvoiceItems)
+            {
+                item.Product = _unitOfWork.ProductRepository.GetFirstOrDefault(x => x.ProductId == item.ProductId);
+            }
+
             return new Invoice
             {
                 InvoiceHeader = invoiceHeader,
@@ -32,19 +38,31 @@ namespace Isa.Infrastructures.Services.Services
 
         public void AddNewInvoice(Invoice invoice)
         {
-            var invoiceHeader = invoice.InvoiceHeader;
-            var client = invoice.Client;
 
-            _unitOfWork.BeginTransaction();
-
-            foreach(var item in invoice.InvoiceHeader.InvoiceItems)
+            try
             {
-                _unitOfWork.InvoiceItemRepository.Insert(item);
+                _unitOfWork.BeginTransaction();
+
+                var invoiceHeader = invoice.InvoiceHeader;
+                invoiceHeader.Client = invoice.Client;
+
+                _unitOfWork.ClientRepository.Insert(invoice.Client);
+
+                _unitOfWork.InvoiceHeaderRepository.Insert(invoice.InvoiceHeader);
+
+                foreach (var item in invoice.InvoiceHeader.InvoiceItems)
+                {
+                    _unitOfWork.InvoiceItemRepository.Insert(item);
+                }
+
+                _unitOfWork.Commit();
+                _unitOfWork.SaveChanges();
             }
-
-            _unitOfWork.InvoiceHeaderRepository.Insert(invoice.InvoiceHeader);
-
-            _unitOfWork.ClientRepository.Insert(client);
+            catch(Exception ex)
+            {
+                _unitOfWork.Rollback();
+            }
+           
 
         }
 
