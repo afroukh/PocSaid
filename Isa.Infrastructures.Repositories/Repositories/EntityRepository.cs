@@ -66,11 +66,7 @@ namespace Isa.Infrastructures.Repositories.Repositories
             _context.Entry(entity).State = EntityState.Deleted;
         }
 
-        public IEnumerable<T> GetAll()
-        {
-
-            return _context.Set<T>().ToList();
-        }
+       
 
         public IQueryable<T> Get(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, params Expression<Func<T, object>>[] includes)
         {
@@ -96,6 +92,47 @@ namespace Isa.Infrastructures.Repositories.Repositories
         public IQueryable<T> SelectQuery(string query, params object[] parameters)
         {
             return _context.Set<T>().SqlQuery(query, parameters).AsQueryable();
+        }
+        public T Get(int id)
+        {
+
+            return _context.Set<T>().Find(id);
+        }
+
+        public IEnumerable<T> GetAll()
+        {
+
+            return _context.Set<T>().ToList();
+        }
+
+        public IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
+        {
+            return _context.Set<T>().Where(predicate);
+        }
+
+        public T SingleOrDefault(Expression<Func<T, bool>> predicate)
+        {
+            return _context.Set<T>().SingleOrDefault(predicate);
+        }
+
+        public void Add(T entity)
+        {
+            _context.Set<T>().Add(entity);
+        }
+
+        public void AddRange(IEnumerable<T> entities)
+        {
+            _context.Set<T>().AddRange(entities);
+        }
+
+        public void Remove(T entity)
+        {
+            _context.Set<T>().Remove(entity);
+        }
+
+        public void RemoveRange(IEnumerable<T> entities)
+        {
+            _context.Set<T>().RemoveRange(entities);
         }
     }
 }
