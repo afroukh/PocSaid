@@ -66,7 +66,11 @@ namespace Isa.Infrastructures.Repositories.Repositories
             _context.Entry(entity).State = EntityState.Deleted;
         }
 
+        public IEnumerable<T> GetAll()
+        {
 
+            return _context.Set<T>().ToList();
+        }
 
         public IQueryable<T> Get(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, params Expression<Func<T, object>>[] includes)
         {

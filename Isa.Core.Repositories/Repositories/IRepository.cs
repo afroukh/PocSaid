@@ -13,6 +13,8 @@ namespace Isa.Core.Repositories.Repositories
         void Update(T entity);
         void Delete(int id);
         void Delete(T entity);
+
+        IEnumerable<T> GetAll();
         IQueryable<T> Get(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, params Expression<Func<T, object>>[] includes);
         IQueryable<T> Query();
         T GetFirstOrDefault(Expression<Func<T, bool>> filter = null, params Expression<Func<T, object>>[] includes);

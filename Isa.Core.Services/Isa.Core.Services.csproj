@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="DomainModels\Invoice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IClientService.cs" />
     <Compile Include="Services\IInvoiceService.cs" />
   </ItemGroup>
   <ItemGroup>

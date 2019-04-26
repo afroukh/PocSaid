@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -31,13 +32,16 @@ namespace Isa.Bootstrapper
             builder.RegisterType(typeof(UnitOfWork)).As(typeof(IUnitOfWork)).InstancePerRequest();
             builder.RegisterType(typeof(SalesContext)).As(typeof(IEntitiesContext)).InstancePerRequest();
             builder.RegisterGeneric(typeof(EntityRepository<>)).As(typeof(IRepository<>)).InstancePerRequest();
-
             builder.RegisterType(typeof(InvoiceService)).As(typeof(IInvoiceService)).InstancePerRequest();
+            builder.RegisterType(typeof(ClientService)).As(typeof(IClientService)).InstancePerRequest();
+
+            //  builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).AsSelf().AsImplementedInterfaces();
 
 
 
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+            
 
 
         }
