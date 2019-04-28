@@ -11,6 +11,7 @@ namespace Isa.Core.Repositories.EntityModels
         public int ClientId { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
+
         public virtual List<InvoiceHeader>  InvoiceHeaders { get; set; }
 
         public Client()
